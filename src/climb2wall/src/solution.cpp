@@ -97,6 +97,8 @@ Solution::Solution(const std::string name, bool spin_thread) : hexapodClient(nam
   meclErr_afterPrePress_sub = nh_.subscribe<hexapod_msgs::LegJoints>("/hexapod_completely_prePress_balance", 1, &Solution::meclErr_afterPrePress_cb, this);
   leg_meclErr_afterPrePress_flag = false;
 
+  save_meclBaln_sub = nh_.subscribe<std_msgs::String>("/save_meclErrBalnRate", 1, &Solution::save_meclBaln_cb, this);
+
   ROS_INFO("*********************************");
   ROS_INFO("         WeLCH-CLIMBING          ");
   if(MACHINE == 1)
@@ -688,7 +690,7 @@ void Solution::rightLeg2Wall(const int leg_index, const geometry_msgs::Point &in
 
     rawJointStatesStore(legs);
 
-    if (cycle_period < 0.5 * cycle_length || cycle_period > 0.8 * cycle_length)
+    if (cycle_period < 0.5 * cycle_length)
       cycle_period += 2;
     else
       cycle_period += 0.5;
@@ -773,6 +775,12 @@ void Solution::rightLeg2Wall(const int leg_index, const geometry_msgs::Point &in
   publishPrePressPos(leg_index, legs);
 } */
 
+
+/*****************************************************
+*                   %预压函数%                        *
+*         输入： 腿序  预压距离  预压周期  关节角度        *
+*                                                    *
+*****************************************************/
 void Solution::prePress(const int leg_index, double prePress, const int &cycle_length, hexapod_msgs::LegsJoints &legs)
 {
   for (int i = 0; i < 6; i++)
@@ -789,9 +797,9 @@ void Solution::prePress(const int leg_index, double prePress, const int &cycle_l
   ROS_INFO("Before prePress confirm, you can publish '/hexapod_meclErr_balance' topic to correct the mechanical error");
   leg_meclErr_flag = false; 
   leg_meclErr_balance.coxa = leg_meclErr_balance.femur = leg_meclErr_balance.tibia = leg_meclErr_balance.tarsus = 0.0;
-  while (prePress_confirm_flag == false)
+  while (prePress_confirm_flag == false)   //没有发布预压确定话题时，进入循环检查是否需要进行角度补偿
   {
-    if (leg_meclErr_flag == true)
+    if (leg_meclErr_flag == true)  //当收到角度补偿话题时，进行角度补偿
     {
       meclErr_balance(leg_index, legs);
       leg_meclErr_flag = false;
@@ -805,6 +813,8 @@ void Solution::prePress(const int leg_index, double prePress, const int &cycle_l
   prePress_backward(leg_index, prePress, cycle_length / 2, legs);
 }
 
+
+//预压前半段控制函数，预压后在气压升至80前可以进行关节补偿
 void Solution::prePress_forward(const int leg_index, double prePress, const int cycle_length, hexapod_msgs::LegsJoints &legs)
 {
   hexapod_msgs::LegJoints initLeg; //缓存初始关节角
@@ -901,9 +911,9 @@ void Solution::prePress_forward(const int leg_index, double prePress, const int 
 
   leg_meclErr_afterPrePress_flag = false;
   leg_meclErr_afterPrePress.coxa = leg_meclErr_afterPrePress.femur = leg_meclErr_afterPrePress.tibia = leg_meclErr_afterPrePress.tarsus = 0.0;
-  while (!isStickDone(requestIO))
+  while (!isStickDone(requestIO))     //当气压未升至80时，进入循环，可发布话题进行角度调节
   {
-    if (leg_meclErr_afterPrePress_flag == true)
+    if (leg_meclErr_afterPrePress_flag == true)   //当接收到角度调节话题时，进行误差补偿
     {
       completely_prePress_balance(leg_index, legs);
       leg_meclErr_afterPrePress_flag = false;
@@ -2131,6 +2141,8 @@ void Solution::leg_prePress_confirm_cb(const std_msgs::Float64ConstPtr &prePress
   prePress_confirm = prePress_confirm_msg->data;
 }
 
+
+//预压前角度误差补偿控制函数
 void Solution::meclErr_balance(const int leg_index, hexapod_msgs::LegsJoints &legs)
 {
   ROS_INFO("Correcting mechanical error...");
@@ -2203,6 +2215,8 @@ void Solution::meclErr_afterPrePress_cb(const hexapod_msgs::LegJointsConstPtr &l
   leg_meclErr_afterPrePress_flag = true;
 }
 
+
+//预压后进行角度误差补偿
 void Solution::completely_prePress_balance(const int leg_index, hexapod_msgs::LegsJoints &legs)
 {
 
@@ -2248,10 +2262,27 @@ void Solution::reset_prePress_balance(const int leg_index, const int reset_lengt
   ROS_INFO("Reset mechanical balance for completely prepress");
 }
 
-void Solution::saveMeclBalance()
+
+//将误差补偿表附加系统时间导出
+/*void Solution::saveMeclBalance()
 {
   std::ofstream meclBalnText;
-  meclBalnText.open("/home/quan/hexapod_service_ws/src/climb2wall/src/BigHexBalance.txt");
+
+  time_t tt;
+  time(&tt);
+  tt = tt + 8*3600;  // transform the time zone
+  tm* t= gmtime( &tt );
+  std::string filename;
+  filename = "/home/sun/hexapod_service_ws/src/climb2wall/src/BigHexBalance";
+  filename += std::to_string(t->tm_year + 1900);
+  filename += std::to_string(t->tm_mon+1);
+  filename += std::to_string(t->tm_mday);
+  filename += std::to_string(t->tm_hour);
+  filename += std::to_string(t->tm_min);
+  filename += ".yaml";
+
+  meclBalnText.open(filename, std::fstream::out);
+
   for(int i = 0; i < 24; i++)
   {
     meclBalnText<<"JOINT"<<i+1<<"_MECHANICAL_ERROR_BALANCE_RATE: [";
@@ -2262,5 +2293,41 @@ void Solution::saveMeclBalance()
     meclBalnText<<"]"<<std::endl;
   }
   meclBalnText.close();
-  ROS_INFO("Mechanical error balance rate have been saved to BigHexBalance.txt");
+  ROS_INFO("Mechanical error balance rate have been saved to %s", filename.c_str());
+}*/
+
+
+//将误差补偿表附加系统时间导出
+void Solution::save_meclBaln_cb(std_msgs::String msg)
+{
+  std::ofstream meclBalnText;
+
+  time_t tt;
+  time(&tt);
+  tt = tt + 8*3600;  // transform the time zone
+  tm* t= gmtime( &tt );
+  std::string filename;
+  filename = "/home/sun/hexapod_service_ws/src/climb2wall/params/meclErrBalnRate/BigHexBalance";
+  filename += std::to_string(t->tm_year + 1900);
+  filename += std::to_string(t->tm_mon+1);
+  filename += std::to_string(t->tm_mday);
+  filename += std::to_string(t->tm_hour);
+  filename += std::to_string(t->tm_min);
+  filename += ".yaml";
+
+  meclBalnText.open(filename, std::fstream::out);
+
+  meclBalnText<<msg.data<<std::endl;
+  for(int i = 0; i < 24; i++)
+  {
+    meclBalnText<<"JOINT"<<i+1<<"_MECHANICAL_ERROR_BALANCE_RATE: [";
+    for(int j = 0; j < MeclErrBalnRate_forSave[0].size(); j++)
+    {
+      meclBalnText<<MeclErrBalnRate_forSave[i][j]<<",";
+    }
+    meclBalnText<<"]"<<std::endl;
+  }
+  meclBalnText.close();
+  ROS_INFO("Mechanical error balance rate have been saved to %s", filename.c_str());
 }
+

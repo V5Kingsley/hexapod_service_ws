@@ -4,7 +4,7 @@ int main(int argc, char **argv)
 {
   ros::init(argc, argv, "climb2wall");
   Solution Solution("hexapod_sm_service", true);
-  ros::AsyncSpinner spinner(2);  //2线程，1线程也行？
+  ros::AsyncSpinner spinner(2);  //线程数，0表示处理器内核数
   spinner.start();
 
   //六足关节初始化
@@ -52,7 +52,7 @@ int main(int argc, char **argv)
   double liftHeight = 0.1; //抬腿高度
 
   ///*调整成螃蟹姿态*///
-  cycle_length = 2000; 
+  cycle_length = 2000;   //2000
   Solution.legAdjustOnGround(0, initPos[0], finalPos[0], liftHeight, cycle_length, legs);
   //一腿预压///
   prePress = 0.015;
@@ -86,7 +86,7 @@ int main(int argc, char **argv)
   Solution.stepCnt++;
 
   /*********************抬第二腿前往后平移********************************/ //stepCnt = 4
-  cycle_length = 2800;        //2800
+  cycle_length = 1500;        //2800
   double translation = -0.1; //沿y轴平移-0.1
   double height = 0;         //沿z轴平移0
   Solution.publishRollTranslationLift(GROUND, roll_t, roll_0, translation, height, legs, cycle_length);
@@ -103,7 +103,7 @@ int main(int argc, char **argv)
   Solution.stepCnt++;
 
   /*****************前移****************************/ //stepCnt = 6 
-  cycle_length = 1800; //1800
+  cycle_length = 1500; //1800
   translation = 0.1;  //机体沿y轴平移0.1
   height = 0.0;
   Solution.publishRollTranslationLiftBut2(GROUND, roll_t, roll_0, translation, height, legs, cycle_length);
@@ -112,7 +112,7 @@ int main(int argc, char **argv)
   Solution.stepCnt++; 
 
   /*********************前移后提升重心********************************/ //stepCnt = 7 //此步骤不修复误差，误差比例全置0
-  cycle_length = 1800; //1800
+  cycle_length = 1200; //1800
   translation = 0;    //沿y轴平移0
   height = 0.04;      //沿z轴平移0.04
   Solution.publishRollTranslationLiftBut2(GROUND, roll_t, roll_0, translation, height, legs, cycle_length);
@@ -126,7 +126,7 @@ int main(int argc, char **argv)
   Solution.stepCnt+=3;   //stepCnt恢复
 
   /******************抬第一腿************************/  //stepCnt = 8
-  cycle_length = 3500; 
+  cycle_length = 3500; //3500
   Solution.legInitPos(0, legs.leg[0], 0, initPos[0]);
   givenPosZ = 0.15;     //抬腿高度
   distance2Wall = 0.58; //距离墙体距离
@@ -153,7 +153,7 @@ int main(int argc, char **argv)
   //std::cin>>y;
 
   /********************后三腿跨步*********************/ //stepCnt = 10
-  cycle_length = 2000; //2800
+  cycle_length = 2000; //2000
   for (int leg_index = 3; leg_index < 6; leg_index++)
   {
     Solution.legInitPos(leg_index, legs.leg[leg_index], 0, initPos[leg_index]); //计算初始位姿
@@ -221,7 +221,7 @@ int main(int argc, char **argv)
   //std::cin>>y;
 
   /**************************提重心******************************/ //stepCnt = 17
-  cycle_length = 2000; //2800
+  cycle_length = 2000; //2000
   translation = 0.1;   //沿y轴平移0.11
   height = 0.04;       //提升0.04
   roll_t = roll_0 = 45.0 / 180.0 * M_PI;
@@ -230,7 +230,7 @@ int main(int argc, char **argv)
   // std::cin>>y;
 
   /**********************后三腿跨步*********************************/ //stepCnt = 18
-  cycle_length = 2000; //2800
+  cycle_length = 2000; //2000
   stride = 0.25;       //跨步距离0.25
   liftHeight = 0.1;    //抬腿高度0.1
 
@@ -343,7 +343,7 @@ int main(int argc, char **argv)
   Solution.stepCnt++;
 
   /***********************重心下移*************************/   //stepCnt = 28
-  cycle_length = 2800;                                                                //2800
+  cycle_length = 1500;                                                                //2800
   double resetHeight = initPos[0].z + Solution.TIBIA_LENGTH + Solution.TARSUS_LENGTH; //六条腿都上墙后重心机体中心恢复初始状态
   roll_t = roll_0 = 0.0;
   height = resetHeight;
@@ -394,5 +394,8 @@ int main(int argc, char **argv)
   }
 #endif
 
-  Solution.saveMeclBalance();
+  std_msgs::String msg;
+  msg.data = "All steps done";
+  Solution.save_meclBaln_cb(msg);
+
 }

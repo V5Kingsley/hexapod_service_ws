@@ -18,11 +18,14 @@
 #include <link_com/heartbag.h>
 
 #include <fstream>
+#include <time.h>
+
+#include <std_msgs/String.h>
 
 #define GROUND 1
 #define WALL 0
 
-#define MACHINE 1 //置0为gazebo仿真，置1为实体机
+#define MACHINE 0 //置0为gazebo仿真，置1为实体机
 #define STICK 1   //置1时吸盘开启
 
 using std::vector;
@@ -157,14 +160,13 @@ public:
 
   void prePress_forward(const int leg_index, double prePress, const int cycle_length, hexapod_msgs::LegsJoints &legs);
   void prePress_backward(const int leg_index, double prePress, const int cycle_length, hexapod_msgs::LegsJoints &legs);
-  void prePress_callFor_stick(const int leg_index, hexapod_msgs::LegsJoints &legs);
   void leg2Special_prePress_forward(const int leg_index, double prePress, const int cycle_length, hexapod_msgs::LegsJoints &legs);
   static const int jointNum = 24;
   float ComPressMeclErrBalnRate[jointNum];
 
-  void saveMeclBalance();
-
-
+  //void saveMeclBalance();
+  ros::Subscriber save_meclBaln_sub;
+  void save_meclBaln_cb(std_msgs::String msg);
 };
 
 #endif
