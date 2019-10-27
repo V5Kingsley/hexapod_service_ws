@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+  <arg name="config" default="my_hexapod"/>
+  <rosparam command="load" file="$(find hexapodcontrol)/params/$(arg config).yaml"/>
+  <node name="hexapodThreeControl" pkg="hexapodcontrol" type="hexapodcontrol" output="screen">
+    <!--速度控制话题-->
+    <remap from="/cmd_vel" to="/hexapod/three_gait/cmd_vel"/>
+    <!--六足模式控制话题，1为六角形态，2为螃蟹形态，3为爬墙模式（此时不接收速度话题信息）-->
+    <remap from="/hexapod_mode_select" to="/hexapod_mode_select"/> 
+  </node>
+
+
+</launch>

@@ -1,0 +1,25 @@
+{
+    "configurations": [
+        {
+            "browse": {
+                "databaseFilename": "",
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "includePath": [
+                "/home/quan/hexapod_service_ws/devel/include",
+                "/home/quan/catkin_ws/devel/include",
+                "/opt/ros/indigo/include",
+                "/home/quan/hexapod_service_ws/src/hexapod_gazebo_description/include",
+                "/home/quan/hexapod_service_ws/src/hexapodservice/include",
+                "/home/quan/hexapod_service_ws/src/vk_rviz_teleop/include",
+                "/usr/include"
+            ],
+            "name": "Linux",
+            "intelliSenseMode": "gcc-x64",
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++14"
+        }
+    ],
+    "version": 4
+}

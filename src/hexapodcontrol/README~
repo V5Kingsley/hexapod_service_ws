@@ -1,0 +1,8 @@
+六足三角步态控制程序
+
+CMakeLists.txt中添加了"~/hexapod_service_ws/devel/include"头文件目录，需改为自己的工作空间名称。亦可亦将此目录删除，只需将工作空间添加到~/.bashrc中即可
+
+
+
+
+control.h中 line 25/26 可以选择gazebo仿真/实体实验/吸盘控制，根据需要进行修改编译

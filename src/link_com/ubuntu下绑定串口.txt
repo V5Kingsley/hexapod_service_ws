@@ -1,0 +1,11 @@
+步骤如下：
+一、插上设备，使用lsusb命令查看设备的ID号 形式如ID 1a86:7523
+二、在文件夹/etc/udev/rules.d下新建一个文件为xxx.rules
+三、在该文件下写上
+KERNEL=="ttyUSB*", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="7523", MODE:="0666", SYMLINK+="hexapod"
+
+注意：二三步需要用权限sudo 最好用命令行输入
+
+四、运行sudo udevadm trigger 使修改生效
+五、使用 ls -l /dev/hexapod 查看是否与ttyUSB*绑定，若绑定成功，今后可使用/dev/hexapod 该串口名
+

@@ -1,0 +1,8 @@
+爬墙程序
+
+CMakeLists.txt中添加了"~/hexapod_service_ws/devel/include"头文件目录，需改为自己的工作空间名称。亦可亦将此目录删除，只需将工作空间添加到~/.bashrc中即可
+
+
+
+
+solution.h中 line 23 可以选择gazebo仿真和实体机实验两种模式，根据需要选取编译

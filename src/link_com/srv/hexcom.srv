@@ -1,0 +1,8 @@
+#chose = 1 修改pwm； 2 修改IO； 3 重置串口； 4 关闭串口
+#io[x] = 0 代表第x腿吸盘与真空泵连通，吸盘与放气端口之间阻塞; io[x] = 1 代表第x腿吸盘与放气端口连通，吸盘与真空泵之间阻塞
+
+uint8 chose
+uint8 pwm
+uint8[7] io
+---
+string back

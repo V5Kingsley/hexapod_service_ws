@@ -1,0 +1,28 @@
+#ifndef DEFINE_H_
+#define DEFINE_H_
+
+//MODE选择
+#define SIMPLEMOTION_CONTROL 0
+#define ONELEG_CONTROL 1
+#define ALLLEGS_CONTROL 2
+#define ONELEG_RESET 3
+#define ALLLEGS_RESET 4
+#define MAXPOINT_REQUEST 5
+#define READ_ALL_LEGS 6
+
+//对应MODE为0时的指令列表
+#define OPENBUS 1
+#define CLOSEBUS 2
+#define ENABLEMOTOR 3
+#define DISABLEMOTOR 4
+#define INITAXIS 5
+#define GETSTATUS 6
+#define CLEARFAULT 7
+#define ALLLEGRESET 8
+#define ABORTMOTION 9
+#define READALLLEGS 10
+
+#define SAMPLE_RATE 200
+
+
+#endif

@@ -1,0 +1,13 @@
+六足三角步态控制程序
+
+CMakeLists.txt中添加了"~/hexapod_service_ws/devel/include"头文件目录，需改为自己的工作空间名称。亦可亦将此目录删除，只需将工作空间添加到~/.bashrc中即可
+
+
+
+
+control.h中 line 25/26 可以选择gazebo仿真/实体实验/吸盘控制，根据需要进行修改编译
+
+
+/hexapod/three_gait/cmd_vel  为速度控制话题
+/hexapod_mode_select 为六足模式控制话题，1为六角形态，2为螃蟹形态，3为爬墙模式（此时不接收速度话题信息）
+两种话题名称可以在hexapodcontrol.launch中修改

@@ -1,0 +1,13 @@
+int32 MODE 
+int32 SIMPLEMOTION_MODE
+int32 MAXPOINTS
+int32 LEG_INDEX
+hexapodservice/legjoints ONELEG
+hexapodservice/legs ALLLEGS
+---
+int32 status
+int32 freespace
+bool motionActive
+string result
+---
+hexapodservice/leg ALLLEGS_fdbk

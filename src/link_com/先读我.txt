@@ -1,0 +1,13 @@
+int32 pwm
+int32[7] io
+int32 chose
+---
+string back
+
+以上为服务的消息类型
+chose 
+为1 ： 修改PWM
+为2 ： 修改IO
+为3 ： 请求反馈信息
+为4 ： 重新打开串口
+为5 ： 关闭串口 

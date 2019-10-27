@@ -1,0 +1,4 @@
+int32[] coxa
+int32[] femur
+int32[] tibia
+int32[] tarsus

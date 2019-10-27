@@ -1,0 +1,7 @@
+<launch>
+
+  <rosparam command="load" file="$(find hexapod_sm_pos)/params/joint_states_names.yaml"/>
+  <node name="VkHex_joint_states_publish" pkg="joint_states_publish" type="joint_states_publish" output="screen"/>
+
+
+</launch>

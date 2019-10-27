@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+  <arg name="config" default="my_hexapod"/>
+  <rosparam command="load" file="$(find hexapod_wall_control)/params/$(arg config).yaml"/>
+  <rosparam command="load" file="$(find hexapod_wall_control)/params/BigHexControlBalance.yaml"/>
+  <node name="hexapodWallControl" pkg="hexapod_wall_control" type="hexapod_wall_control" output="screen">
+    <remap from="/cmd_vel" to="/hexapod/onWall/cmd_vel"/>
+  </node>
+  <!--<node name="turtel" pkg="turtlesim" type="turtle_teleop_key" output="screen"/>-->
+
+</launch>

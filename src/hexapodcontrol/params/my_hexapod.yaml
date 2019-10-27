@@ -1,0 +1,77 @@
+# Configuration Settings
+
+# Speed limit in Hz for the master loop rate
+MASTER_LOOP_RATE: 1
+
+# Static time division to convert cmd_vel into segments for controller loop
+VELOCITY_DIVISION: 0.5
+
+# Number of Legs
+NUMBER_OF_LEGS: 6
+
+# Number of leg segments ( 3dof or 4dof )
+NUMBER_OF_LEG_SEGMENTS: 4
+
+# Define Initial Coxa Offsets in Radians ['RR', 'RM', 'RF', 'LR', 'LM', 'LF']
+# IK is solved in local space currently, hence the reason right and left have same angle offsets.
+INIT_COXA_ANGLE: [!degrees 30, !degrees 90, !degrees 150, !degrees -150, !degrees -90, !degrees -30]
+
+# Define distance in meters from coxa joint to the center ['RR', 'RM', 'RF', 'LR', 'LM', 'LF']
+# IK is solved in local space currently, hence the reason right and left have same distance values
+COXA_TO_CENTER_X: [0.15588, 0.0, -0.15588, -0.15588, 0.0, 0.15588]
+COXA_TO_CENTER_Y: [0.09, 0.18, 0.09, -0.09, -0.18, -0.09]
+
+# Define Start Position Of Feet in meters from the coxa joint ['RR', 'RM', 'RF', 'LR', 'LM', 'LF']
+# Middle Legs is coxa axis to foot in meters
+# math to find positions of front and back legs POS_Y = Middle leg start position * cos(45 degrees) (0.707)
+# math to find positions of front and back legs POS_X = Middle leg start position * sin(45 degrees) (0.707)
+# IK is solved in local space currently, hence the reason right and left have same distance values
+INIT_FOOT_POS_X: [0.20601878, 0.0, -0.20601878, -0.20601878, 0.0, 0.20601878]
+INIT_FOOT_POS_Y: [0.118945, 0.23789, 0.118945, -0.118945, -0.23789, -0.118945]
+INIT_FOOT_POS_Z: [0.321, 0.321, 0.321, 0.321, 0.321, 0.321]
+
+# Define Leg Measurements in meters
+COXA_LENGTH:   0.093
+FEMUR_LENGTH:  0.14489
+TIBIA_LENGTH:  0.164
+TARSUS_LENGTH: 0.157
+
+# Gait Settings
+CYCLE_LENGTH: 2000
+
+#抬腿高度
+LEG_LIFT_HEIGHT: 0.1
+
+# Leg gait order (grouping) ['RR', 'RM', 'RF', 'LR', 'LM', 'LF']
+LEG_GAIT_ORDER: [0, 1, 0, 1, 0, 1]
+
+#吸盘压力
+STICK_FORCE: 3000
+
+#关节名称
+JOINT_NAME: [
+    leg1_roll, leg1_pitch1, leg1_pitch2, leg1_pitch3, leg1_stick3, 
+    leg2_roll, leg2_pitch1, leg2_pitch2, leg2_pitch3, leg2_stick3, 
+    leg3_roll, leg3_pitch1, leg3_pitch2, leg3_pitch3, leg3_stick3, 
+    leg4_roll, leg4_pitch1, leg4_pitch2, leg4_pitch3, leg4_stick3, 
+    leg5_roll, leg5_pitch1, leg5_pitch2, leg5_pitch3, leg5_stick3, 
+    leg6_roll, leg6_pitch1, leg6_pitch2, leg6_pitch3, leg6_stick3
+]
+
+#机器人最大速度限制
+LINEAR_X_MAX: 0.1
+LINEAR_Y_MAX: 0.1
+ANGULAR_Z_MAX: 0.3
+
+#吸盘气压
+KPALIMIT: -80.0
+
+#六足六边形形态足端初始位置
+HEXAPOD_INIT_FOOT_POS_X: [0.20601878, 0.0, -0.20601878, -0.20601878, 0.0, 0.20601878]
+HEXAPOD_INIT_FOOT_POS_Y: [0.118945, 0.23789, 0.118945, -0.118945, -0.23789, -0.118945]
+HEXAPOD_INIT_FOOT_POS_Z: [0.321, 0.321, 0.321, 0.321, 0.321, 0.321]
+
+#六足螃蟹形态足端初始位置
+CRAB_INIT_FOOT_POS_X: [0, 0, 0, 0, 0, 0]
+CRAB_INIT_FOOT_POS_Y: [0.23789, 0.23789, 0.23789, -0.23789, -0.23789, -0.23789]
+CRAB_INIT_FOOT_POS_Z: [0.321, 0.321, 0.321, 0.321, 0.321, 0.321]

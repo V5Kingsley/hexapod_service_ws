@@ -1,0 +1,6 @@
+<launch>
+  <node name="hexapodservice" pkg="hexapodservice" type="hexapodservice" output="screen"/>
+  <node name="smcontrol_client" pkg="hexapodservice" type="smcontrol_client" output="screen" launch-prefix="gnome-terminal -e"/>
+
+</launch>
+
