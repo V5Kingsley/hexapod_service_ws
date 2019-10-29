@@ -10,10 +10,11 @@
 
 Control::Control(const std::string name, bool spin_thread) : hexapod_client_(name, spin_thread)
 {
-  ros::param::get("NUMBER_OF_LEGS", NUMBER_OF_LEGS);
-  ros::param::get("NUMBER_OF_LEG_SEGMENTS", NUMBER_OF_LEG_JOINTS);
-  ros::param::get("MASTER_LOOP_RATE", MASTER_LOOP_RATE);
-  ros::param::get("VELOCITY_DIVISION", VELOCITY_DIVISION);
+  bool bRosParamSuccess = true;
+  bRosParamSuccess &= ros::param::get("NUMBER_OF_LEGS", NUMBER_OF_LEGS);
+  bRosParamSuccess &= ros::param::get("NUMBER_OF_LEG_SEGMENTS", NUMBER_OF_LEG_JOINTS);
+  bRosParamSuccess &= ros::param::get("MASTER_LOOP_RATE", MASTER_LOOP_RATE);
+  bRosParamSuccess &= ros::param::get("VELOCITY_DIVISION", VELOCITY_DIVISION);
   nh_.param<int>("VkBHexSM/sm_max_point_one_transmit", feedDriver_points_, 300);
   nh_.param<int>("VkBHexSM/sm_point_buf_size", sm_point_buf_size, 3000);
   ros::param::get("KPALIMIT", KPALIMIT);
@@ -51,7 +52,7 @@ Control::Control(const std::string name, bool spin_thread) : hexapod_client_(nam
 
   feet_position = nh_.advertise<hexapod_msgs::FeetPositions>("feet_position", 10);
 
-  ros::param::get("JOINT_NAME", joint_name);
+  bRosParamSuccess &= ros::param::get("JOINT_NAME", joint_name);
   sm_pos_sub = nh_.subscribe<hexapodservice::leg>("/hexapod_sm_pose", 1, &Control::sm_pos_Cb, this);
   sm_pos_pub = nh_.advertise<sensor_msgs::JointState>("/joint_states", 1);
 
@@ -63,12 +64,12 @@ Control::Control(const std::string name, bool spin_thread) : hexapod_client_(nam
   hexapod2crab_flag = false;
   crab2hexapod_flag = false;
   climb2wall_flag = false;
-  ros::param::get("INIT_COXA_ANGLE", INIT_COXA_ANGLE);
-  ros::param::get("BODY_RADIUS", BODY_RADIUS);
-  ros::param::get("COXA_LENGTH", COXA_LENGTH);
-  ros::param::get("FEMUR_LENGTH", FEMUR_LENGTH);
-  ros::param::get("TIBIA_LENGTH", TIBIA_LENGTH);
-  ros::param::get("TARSUS_LENGTH", TARSUS_LENGTH);
+  bRosParamSuccess &= ros::param::get("INIT_COXA_ANGLE", INIT_COXA_ANGLE);
+  bRosParamSuccess &= ros::param::get("BODY_RADIUS", BODY_RADIUS);
+  bRosParamSuccess &= ros::param::get("COXA_LENGTH", COXA_LENGTH);
+  bRosParamSuccess &= ros::param::get("FEMUR_LENGTH", FEMUR_LENGTH);
+  bRosParamSuccess &= ros::param::get("TIBIA_LENGTH", TIBIA_LENGTH);
+  bRosParamSuccess &= ros::param::get("TARSUS_LENGTH", TARSUS_LENGTH);
 
   //符号位， 角度大于等于0时sign取1， 否则取-1
   for (int leg_index = 0; leg_index < 6; leg_index++)
@@ -86,6 +87,12 @@ Control::Control(const std::string name, bool spin_thread) : hexapod_client_(nam
   for (int i = 0; i < 24; i++)
   {
     posBuffer[i].reserve(3000);
+  }
+
+  if(!bRosParamSuccess)
+  {
+    ROS_ERROR("ros get param failed!!");
+    ros::shutdown();
   }
 }
 

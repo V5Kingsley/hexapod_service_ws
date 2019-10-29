@@ -173,7 +173,7 @@ TeleopPanel::TeleopPanel( QWidget* parent )
  leftup_layout_tab3->addWidget(stride_length_);
  
  QLabel *vklogoLabel = new QLabel;
- QPixmap vkIcon("/home/quan/hexapod_service_ws/src/vk_rviz_teleop/images/logo_15.jpeg");
+ QPixmap vkIcon("/home/v5-lab/hexapod_service_ws/src/vk_rviz_teleop/images/logo_150.jpeg");
  vklogoLabel->setPixmap(vkIcon);
  vklogoLabel->resize(150,80);
  

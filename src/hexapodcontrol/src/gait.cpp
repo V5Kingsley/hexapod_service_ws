@@ -10,18 +10,25 @@ static const double PI = 3.141592653;
 
 Gait::Gait(void)
 {
-  ros::param::get("CYCLE_LENGTH", CYCLE_LENGTH_ORIGIN);
-  ros::param::get("LEG_LIFT_HEIGHT", LEG_LIFT_HEIGHT);
-  ros::param::get("LEG_GAIT_ORDER", cycle_leg_number_);
-  ros::param::get("NUMBER_OF_LEGS", NUMBER_OF_LEGS);
-  ros::param::get("LINEAR_X_MAX", linear_x_max);
-  ros::param::get("LINEAR_Y_MAX", linear_y_max);
-  ros::param::get("ANGULAR_Z_MAX", angular_z_max);
+  bool bRosParamSuccess = true;
+  bRosParamSuccess &= ros::param::get("CYCLE_LENGTH", CYCLE_LENGTH_ORIGIN);
+  bRosParamSuccess &= ros::param::get("LEG_LIFT_HEIGHT", LEG_LIFT_HEIGHT);
+  bRosParamSuccess &= ros::param::get("LEG_GAIT_ORDER", cycle_leg_number_);
+  bRosParamSuccess &= ros::param::get("NUMBER_OF_LEGS", NUMBER_OF_LEGS);
+  bRosParamSuccess &= ros::param::get("LINEAR_X_MAX", linear_x_max);
+  bRosParamSuccess &= ros::param::get("LINEAR_Y_MAX", linear_y_max);
+  bRosParamSuccess &= ros::param::get("ANGULAR_Z_MAX", angular_z_max);
   cycle_period_ = 0;  
   stop_cycle_ = 0;
   period_seg = 0.3;
   is_travelling_ = false;
   hexapod_stop_flag = false;
+
+  if(!bRosParamSuccess)
+  {
+    ROS_ERROR("ros get param failed!!");
+    ros::shutdown();
+  }
 }
 
 //每条摆动腿和支撑腿一个周期内的步幅控制

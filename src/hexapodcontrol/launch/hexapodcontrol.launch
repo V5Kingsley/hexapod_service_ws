@@ -10,5 +10,4 @@
     <remap from="/hexapod_mode_select" to="/hexapod_mode_select"/> 
   </node>
 
-
 </launch>

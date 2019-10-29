@@ -2307,7 +2307,7 @@ void Solution::save_meclBaln_cb(std_msgs::String msg)
   tt = tt + 8*3600;  // transform the time zone
   tm* t= gmtime( &tt );
   std::string filename;
-  filename = "/home/sun/hexapod_service_ws/src/climb2wall/params/meclErrBalnRate/BigHexBalance";
+  filename = "/home/v5lab/hexapod_service_ws/src/climb2wall/params/meclErrBalnRate/BigHexBalance";
   filename += std::to_string(t->tm_year + 1900);
   filename += std::to_string(t->tm_mon+1);
   filename += std::to_string(t->tm_mday);

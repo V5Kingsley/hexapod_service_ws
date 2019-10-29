@@ -4,17 +4,24 @@ static const double PI = 3.141592653;
 
 IK::IK(void)
 {
-  ros::param::get("COXA_TO_CENTER_X", COXA_TO_CENTER_X);
-  ros::param::get("COXA_TO_CENTER_Y", COXA_TO_CENTER_Y);
-  ros::param::get("INIT_COXA_ANGLE", INIT_COXA_ANGLE);
-  ros::param::get("INIT_FOOT_POS_X", INIT_FOOT_POS_X); //足端到髋关节的初始位置
-  ros::param::get("INIT_FOOT_POS_Y", INIT_FOOT_POS_Y);
-  ros::param::get("INIT_FOOT_POS_Z", INIT_FOOT_POS_Z);
-  ros::param::get("COXA_LENGTH", COXA_LENGTH);
-  ros::param::get("FEMUR_LENGTH", FEMUR_LENGTH);
-  ros::param::get("TIBIA_LENGTH", TIBIA_LENGTH);
-  ros::param::get("TARSUS_LENGTH", TARSUS_LENGTH);
-  ros::param::get("NUMBER_OF_LEGS", NUMBER_OF_LEGS);
+  bool bRosParamSuccess = true;
+  bRosParamSuccess &= ros::param::get("COXA_TO_CENTER_X", COXA_TO_CENTER_X);
+  bRosParamSuccess &= ros::param::get("COXA_TO_CENTER_Y", COXA_TO_CENTER_Y);
+  bRosParamSuccess &= ros::param::get("INIT_COXA_ANGLE", INIT_COXA_ANGLE);
+  bRosParamSuccess &= ros::param::get("INIT_FOOT_POS_X", INIT_FOOT_POS_X); //足端到髋关节的初始位置
+  bRosParamSuccess &= ros::param::get("INIT_FOOT_POS_Y", INIT_FOOT_POS_Y);
+  bRosParamSuccess &= ros::param::get("INIT_FOOT_POS_Z", INIT_FOOT_POS_Z);
+  bRosParamSuccess &= ros::param::get("COXA_LENGTH", COXA_LENGTH);
+  bRosParamSuccess &= ros::param::get("FEMUR_LENGTH", FEMUR_LENGTH);
+  bRosParamSuccess &= ros::param::get("TIBIA_LENGTH", TIBIA_LENGTH);
+  bRosParamSuccess &= ros::param::get("TARSUS_LENGTH", TARSUS_LENGTH);
+  bRosParamSuccess &= ros::param::get("NUMBER_OF_LEGS", NUMBER_OF_LEGS);
+
+  if(!bRosParamSuccess)
+  {
+    ROS_ERROR("ros get param failed!!");
+    ros::shutdown();
+  }
 }
 
 Trig IK::getSinCos(double angle_rad)
