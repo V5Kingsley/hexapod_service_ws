@@ -141,17 +141,17 @@ void Gait::gaitCycle(const geometry_msgs::Twist &cmd_vel, hexapod_msgs::FeetPosi
     if (is_travelling_ == false && (std::abs(cmd_vel.linear.x) > 0.01 || std::abs(cmd_vel.linear.y) > 0.01 || std::abs(cmd_vel.angular.z) > 0.01))  //六足从停止开始运动时，置开始标志位为1
     {
       start_cycle = 1;
-      ROS_INFO("start_cycle = 1");
+      //ROS_INFO("start_cycle = 1");
     }
     else if (is_travelling_ == true && std::abs(cmd_vel.linear.x) < 0.001 && std::abs(cmd_vel.linear.y) < 0.001 && std::abs(cmd_vel.angular.z) < 0.001)   //六足停止运动时，置停止标志位为1
     {
       stop_cycle_ = 1;
-      ROS_INFO("stop_cycle = 1");
+      //ROS_INFO("stop_cycle = 1");
     }
     else if (is_travelling_ == true && ((base.x - cmd_vel.linear.x) != 0 || (base.y - cmd_vel.linear.y) != 0 || (base.theta - cmd_vel.angular.z) != 0))   //六足速度改变时，置停止标志位为1
     {
       stop_cycle_ = 1;
-      ROS_INFO("vel change stop_cycle = 1");
+      //ROS_INFO("vel change stop_cycle = 1");
     }
 
     if (stop_cycle_ == 0)   //当六足不处于停止复位阶段时，进行步幅赋值。当六足处于停止复位阶段时，需执行完才将步幅赋为0
@@ -159,7 +159,7 @@ void Gait::gaitCycle(const geometry_msgs::Twist &cmd_vel, hexapod_msgs::FeetPosi
       smooth_base_.x = base.x = cmd_vel.linear.x;
       smooth_base_.y = base.y = cmd_vel.linear.y;
       smooth_base_.theta = base.theta = cmd_vel.angular.z;
-      ROS_INFO("smooth_base change");
+      //ROS_INFO("smooth_base change");
     }
 
     //周期调整, 抬腿和落腿周期设为priod_seg*CYCLE_LENGTH_ORIGIN，移动腿时的周期与速度成比例关系，启动和停止时移动腿周期减少一半
