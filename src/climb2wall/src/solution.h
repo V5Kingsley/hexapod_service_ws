@@ -26,7 +26,7 @@
 #define WALL 0
 
 #define MACHINE 0 //置0为gazebo仿真，置1为实体机
-#define STICK 1   //置1时吸盘开启
+#define STICK 0   //置1时吸盘开启
 
 using std::vector;
 

@@ -173,7 +173,7 @@ TeleopPanel::TeleopPanel( QWidget* parent )
  leftup_layout_tab3->addWidget(stride_length_);
  
  QLabel *vklogoLabel = new QLabel;
- QPixmap vkIcon("/home/v5-lab/hexapod_service_ws/src/vk_rviz_teleop/images/logo_150.jpeg");
+ QPixmap vkIcon("/home/v5-lab/hexapod_service_ws/src/vk_rviz_teleop/images/11.png");
  vklogoLabel->setPixmap(vkIcon);
  vklogoLabel->resize(150,80);
  
@@ -305,6 +305,8 @@ void TeleopPanel::stopFuc_tab3()
     stride_length_->setEnabled(true);
     
     disconnect( output_timer, SIGNAL( timeout() ), this, SLOT( sendVel_tab3() ));
+    //addbylincoln
+    connect( output_timer, SIGNAL( timeout() ), this, SLOT( sendVel_tab3() ));
     //chatter_publisher_tab3.shutdown();
     
 }
@@ -405,15 +407,15 @@ void TeleopPanel::upFuc()
     linear_velocity_x_tab3 = a;
     linear_velocity_y_tab3 = 0.0;
     angular_velocity_tab3 = 0.0;
-    downButton->setEnabled(false);
-    leftButton->setEnabled(false);
-    rightButton->setEnabled(false);
-    spinButton_tab3->setEnabled(false);
-    spininvButton_tab3->setEnabled(false);
+    downButton->setEnabled(true);
+    leftButton->setEnabled(true);
+    rightButton->setEnabled(true);
+    spinButton_tab3->setEnabled(true);
+    spininvButton_tab3->setEnabled(true);
     stopButton_tab3->setEnabled(true);
     
-    output_topic_editor_tab3_->setEnabled(false);
-    stride_length_->setEnabled(false);
+    output_topic_editor_tab3_->setEnabled(true);
+    stride_length_->setEnabled(true);
     
 
 }
@@ -425,15 +427,15 @@ void TeleopPanel::downFuc()
    linear_velocity_x_tab3 = -a;
    linear_velocity_y_tab3 = 0.0;
    angular_velocity_tab3 = 0.0;
-    upButton->setEnabled(false);
-    leftButton->setEnabled(false);
-    rightButton->setEnabled(false);
-    spinButton_tab3->setEnabled(false);
+    upButton->setEnabled(true);
+    leftButton->setEnabled(true);
+    rightButton->setEnabled(true);
+    spinButton_tab3->setEnabled(true);
     stopButton_tab3->setEnabled(true);
-    spininvButton_tab3->setEnabled(false);
+    spininvButton_tab3->setEnabled(true);
     
-    output_topic_editor_tab3_->setEnabled(false);
-    stride_length_->setEnabled(false);
+    output_topic_editor_tab3_->setEnabled(true);
+    stride_length_->setEnabled(true);
 }
 
 void TeleopPanel::leftFuc()
@@ -443,15 +445,15 @@ void TeleopPanel::leftFuc()
     linear_velocity_x_tab3 = 0.0;
     linear_velocity_y_tab3 = a;
     angular_velocity_tab3 = 0.0;
-    downButton->setEnabled(false);
-    upButton->setEnabled(false);
-    rightButton->setEnabled(false);
-    spinButton_tab3->setEnabled(false);
-    spininvButton_tab3->setEnabled(false);
+    downButton->setEnabled(true);
+    upButton->setEnabled(true);
+    rightButton->setEnabled(true);
+    spinButton_tab3->setEnabled(true);
+    spininvButton_tab3->setEnabled(true);
     stopButton_tab3->setEnabled(true);
     
-    output_topic_editor_tab3_->setEnabled(false);
-    stride_length_->setEnabled(false);
+    output_topic_editor_tab3_->setEnabled(true);
+    stride_length_->setEnabled(true);
 }
 
 void TeleopPanel::rightFuc()
@@ -461,15 +463,15 @@ void TeleopPanel::rightFuc()
     linear_velocity_x_tab3 = 0.0;
     linear_velocity_y_tab3 = -a;
     angular_velocity_tab3 = 0.0;
-    downButton->setEnabled(false);
-    leftButton->setEnabled(false);
-    upButton->setEnabled(false);
-    spinButton_tab3->setEnabled(false);
-    spininvButton_tab3->setEnabled(false);
+    downButton->setEnabled(true);
+    leftButton->setEnabled(true);
+    upButton->setEnabled(true);
+    spinButton_tab3->setEnabled(true);
+    spininvButton_tab3->setEnabled(true);
     stopButton_tab3->setEnabled(true);
     
-    output_topic_editor_tab3_->setEnabled(false);
-    stride_length_->setEnabled(false);
+    output_topic_editor_tab3_->setEnabled(true);
+    stride_length_->setEnabled(true);
 }
 
 void TeleopPanel::spinFuc()
@@ -479,15 +481,15 @@ void TeleopPanel::spinFuc()
     linear_velocity_x_tab3 = 0.0;
     linear_velocity_y_tab3 = 0.0;
     angular_velocity_tab3 = a;
-    downButton->setEnabled(false);
-    leftButton->setEnabled(false);
-    upButton->setEnabled(false);
-    rightButton->setEnabled(false);
-    spininvButton_tab3->setEnabled(false);
+    downButton->setEnabled(true);
+    leftButton->setEnabled(true);
+    upButton->setEnabled(true);
+    rightButton->setEnabled(true);
+    spininvButton_tab3->setEnabled(true);
     stopButton_tab3->setEnabled(true);
     
-    output_topic_editor_tab3_->setEnabled(false);
-    stride_length_->setEnabled(false);
+    output_topic_editor_tab3_->setEnabled(true);
+    stride_length_->setEnabled(true);
 }
 
 void TeleopPanel::spininvFuc()
@@ -498,15 +500,15 @@ void TeleopPanel::spininvFuc()
     linear_velocity_x_tab3 = 0.0;
     linear_velocity_y_tab3 = 0.0;
     angular_velocity_tab3 = -a;
-    downButton->setEnabled(false);
-    leftButton->setEnabled(false);
-    upButton->setEnabled(false);
-    rightButton->setEnabled(false);
-    spinButton_tab3->setEnabled(false);
+    downButton->setEnabled(true);
+    leftButton->setEnabled(true);
+    upButton->setEnabled(true);
+    rightButton->setEnabled(true);
+    spinButton_tab3->setEnabled(true);
     stopButton_tab3->setEnabled(true);
     
-    output_topic_editor_tab3_->setEnabled(false);
-    stride_length_->setEnabled(false);
+    output_topic_editor_tab3_->setEnabled(true);
+    stride_length_->setEnabled(true);
 }
 
 void TeleopPanel::run_sendvel()
@@ -638,7 +640,6 @@ void rviz_teleop_commander::TeleopPanel::CLOSEBUSButtonFuc()
     //server_exists = smcontrol_client.waitForServer(ros::Duration(5.0));
     return;
   }
-  
   smcontrol_client.sendGoal(goal, &TeleopPanel::doneCb);
   bool finished = smcontrol_client.waitForResult(ros::Duration(5.0));
   

@@ -94,6 +94,15 @@ Control::Control(const std::string name, bool spin_thread) : hexapod_client_(nam
     ROS_ERROR("ros get param failed!!");
     ros::shutdown();
   }
+
+  ROS_INFO("*********************************");
+  ROS_INFO("         hexapodcontrol          ");
+  if(MACHINE == 1)
+    ROS_INFO(" Machine/Simulation: Machine    ");
+  else
+    ROS_INFO(" Machine/Simulation: Simulation ");
+  ROS_INFO("          by Kingsley             ");
+  ROS_INFO("**********************************");
 }
 
 //订阅发布的速度信息，处理上下限速度信息
@@ -800,6 +809,36 @@ void Control::jointCalculate(const int leg_index, const geometry_msgs::Point &po
   leg.femur = x;
   leg.tibia = y - x;
   leg.tarsus = beta - sign[leg_index] * roll_t - y;
+
+  legSafeControl(leg);
+}
+
+/**********************************************
+*             %关节角度安全范围控制%             *
+*                输入： 关节角                  *
+*                输出： 关节角                  *    
+***********************************************/
+void Control::legSafeControl(hexapod_msgs::LegJoints &leg)
+{
+   if(leg.coxa < -M_PI / 2)
+    leg.coxa = -M_PI / 2;
+   if(leg.coxa > M_PI / 2)
+    leg.coxa = M_PI / 2;
+
+  if (leg.femur < -M_PI / 2) //第二关节控制在 -M_PI/2 ~ M_PI/2
+    leg.femur = -M_PI / 2;
+  if (leg.femur > 90.0 / 180 * M_PI)
+    leg.femur = 90.0 / 180 * M_PI;
+
+  if (leg.tibia > M_PI) //第三关节控制在 -M_PI/4 ~ M_PI
+    leg.tibia = M_PI;
+  if (leg.tibia < -45.0 / 180 * M_PI)
+    leg.tibia = -45.0 / 180 * M_PI;
+
+  if (leg.tarsus > M_PI / 2) //第四关节控制在 -M_PI/2 ~ M_PI/2
+    leg.tarsus = M_PI / 2;
+  if (leg.tarsus < -M_PI / 2)
+    leg.tarsus = -M_PI / 2;
 }
 
 /************************************************

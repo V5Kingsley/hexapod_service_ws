@@ -203,3 +203,6 @@ include_directories(
 
 add_executable(climb2wall src/climb2wall.cpp src/solution.cpp)
 target_link_libraries(climb2wall ${catkin_LIBRARIES})
+
+add_executable(pos_adjustment src/pos_adjustment.cpp src/solution.cpp)
+target_link_libraries(pos_adjustment ${catkin_LIBRARIES})

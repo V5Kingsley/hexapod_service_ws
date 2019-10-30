@@ -129,6 +129,7 @@ private:
   void legAdjustOnGround(const int leg_index, const geometry_msgs::Point &initPos, const geometry_msgs::Point &finalPos, const double liftHeight, const int cycle_length, hexapod_msgs::LegsJoints &legs);
   void interpolationOnGround(const geometry_msgs::Point &initPos, const geometry_msgs::Point &finalPos, const double liftHeight, const double cycle_period, const int cycle_length, geometry_msgs::Point &outputPos);
   void jointCalculate(const int leg_index, const geometry_msgs::Point &pos, const double roll_t, hexapod_msgs::LegJoints &leg);
+  void legSafeControl(hexapod_msgs::LegJoints &leg);
   void publishTransformJointStates(const int leg_index);
 
   bool transformFeedDrviers(const int leg_index);

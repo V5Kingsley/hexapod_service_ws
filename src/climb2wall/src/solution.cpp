@@ -10,19 +10,20 @@
 
 Solution::Solution(const std::string name, bool spin_thread) : hexapodClient(name, spin_thread)
 {
-  ros::param::get("INIT_COXA_ANGLE", INIT_COXA_ANGLE);                   //初始髋关节角度
-  ros::param::get("BODY_RADIUS", BODY_RADIUS);                           //机体半径
-  ros::param::get("COXA_LENGTH", COXA_LENGTH);                           //髋关节长度
-  ros::param::get("FEMUR_LENGTH", FEMUR_LENGTH);                         //股关节长度
-  ros::param::get("TIBIA_LENGTH", TIBIA_LENGTH);                         //膝关节长度
-  ros::param::get("TARSUS_LENGTH", TARSUS_LENGTH);                       //踝关节长度
-  ros::param::get("KPALIMIT", KPALIMIT);                                 //气压值，为负值，小于该值时视为吸盘已吸附牢固
+  bool bRosParamErr = false;
+  bRosParamErr &= ros::param::get("INIT_COXA_ANGLE", INIT_COXA_ANGLE);                   //初始髋关节角度
+  bRosParamErr &= ros::param::get("BODY_RADIUS", BODY_RADIUS);                           //机体半径
+  bRosParamErr &= ros::param::get("COXA_LENGTH", COXA_LENGTH);                           //髋关节长度
+  bRosParamErr &= ros::param::get("FEMUR_LENGTH", FEMUR_LENGTH);                         //股关节长度
+  bRosParamErr &= ros::param::get("TIBIA_LENGTH", TIBIA_LENGTH);                         //膝关节长度
+  bRosParamErr &= ros::param::get("TARSUS_LENGTH", TARSUS_LENGTH);                       //踝关节长度
+  bRosParamErr &= ros::param::get("KPALIMIT", KPALIMIT);                                 //气压值，为负值，小于该值时视为吸盘已吸附牢固
   nh_.param<int>("VkBHexSM/sm_point_buf_size", sm_point_buf_size, 3000); //六足服务器角度缓存大小，默认为3000
 
   /**机械误差补偿**/
-  ros::param::get("JOINT_MECHANICAL_ERROR", MeclErr);          //机械误差
-  ros::param::get("JOINT_MECHANICAL_ERROR_UNIT", MeclErrUnit); //机械误差单位
-  ros::param::get("MECLERR_BALANCE_LENGTH", meclErr_balance_length);
+  bRosParamErr &= ros::param::get("JOINT_MECHANICAL_ERROR", MeclErr);          //机械误差
+  bRosParamErr &= ros::param::get("JOINT_MECHANICAL_ERROR_UNIT", MeclErrUnit); //机械误差单位
+  bRosParamErr &= ros::param::get("MECLERR_BALANCE_LENGTH", meclErr_balance_length);
   //获取24个电机的机械误差值
   for (int i = 0; i < 24; i++)
   {
@@ -98,6 +99,12 @@ Solution::Solution(const std::string name, bool spin_thread) : hexapodClient(nam
   leg_meclErr_afterPrePress_flag = false;
 
   save_meclBaln_sub = nh_.subscribe<std_msgs::String>("/save_meclErrBalnRate", 1, &Solution::save_meclBaln_cb, this);
+
+  if(bRosParamErr)
+  {
+    ROS_WARN("ros get param error !!");
+    ros::shutdown();
+  }
 
   ROS_INFO("*********************************");
   ROS_INFO("         WeLCH-CLIMBING          ");
@@ -1085,6 +1092,7 @@ void Solution::leg2SpecialPrePress(const int leg_index, double prePress, const d
 
   //预压前确定角度补偿
   prePress_confirm_flag = false;
+  prePress_confirm = 0;
   ROS_INFO("Please publish '/hexapod_confirm_prePress' topic to confirm prePress.");
   ROS_INFO("Before prePress confirm, you can publish '/hexapod_meclErr_balance' topic to correct the mechanical error");
   leg_meclErr_flag = false; 
@@ -1096,6 +1104,7 @@ void Solution::leg2SpecialPrePress(const int leg_index, double prePress, const d
       meclErr_balance(leg_index, legs);
       leg_meclErr_flag = false;
     }
+    ros::Duration(0.01).sleep();
   }
   prePress = prePress_confirm;
   ROS_INFO("Ready to prepress. Prepress length: %fm", prePress);

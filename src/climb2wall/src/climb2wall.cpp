@@ -54,34 +54,42 @@ int main(int argc, char **argv)
   ///*调整成螃蟹姿态*///
   cycle_length = 2000;   //2000
   Solution.legAdjustOnGround(0, initPos[0], finalPos[0], liftHeight, cycle_length, legs);
+#if STICK 
   //一腿预压///
   prePress = 0.015;
   //Solution.cyclePosPrePress(0, prePress, prePress_cycle, legs);
   Solution.prePress(0, prePress, prePress_cycle, legs);
+#endif
   Solution.meclErrRecover(meclErrRecover_cycle, legs);
   Solution.stepCnt++;
 
   Solution.legAdjustOnGround(2, initPos[2], finalPos[2], liftHeight, cycle_length, legs);
+#if STICK
   //三腿预压///
   prePress = 0.015;
   //Solution.cyclePosPrePress(2, prePress, prePress_cycle, legs);
   Solution.prePress(2, prePress, prePress_cycle, legs);
+#endif
   Solution.meclErrRecover(meclErrRecover_cycle, legs);
   Solution.stepCnt++;
 
   Solution.legAdjustOnGround(3, initPos[3], finalPos[3], liftHeight, cycle_length, legs);
+#if STICK
   //四腿预压///
   prePress = 0.020;
   //Solution.cyclePosPrePress(3, prePress, prePress_cycle, legs);
   Solution.prePress(3, prePress, prePress_cycle, legs);
+#endif
   Solution.meclErrRecover(meclErrRecover_cycle, legs);
   Solution.stepCnt++;
 
   Solution.legAdjustOnGround(5, initPos[5], finalPos[5], liftHeight, cycle_length, legs);
+#if STICK
   //六腿预压///
   prePress = 0.020;
   //Solution.cyclePosPrePress(5, prePress, prePress_cycle, legs);
   Solution.prePress(5, prePress, prePress_cycle, legs);
+#endif
   Solution.meclErrRecover(meclErrRecover_cycle, legs);
   Solution.stepCnt++;
 
@@ -121,7 +129,9 @@ int main(int argc, char **argv)
   prePress = 0.015;
   Solution.stepCnt -= 2;   //legs的角度恢复上一步保持的误差值
   Solution.resetMeclErr(legs);   //legs的角度恢复上一步保持的误差值
+#if STICK 
   Solution.leg2SpecialPrePress(1, prePress, roll_t, prePress_cycle, legs);  //二腿预压特殊处理，修正了抬腿时预留的0.02距离
+#endif
   Solution.meclErrRecover(meclErrRecover_cycle, legs);  //此处的误差回复的是上一步的误差
   Solution.stepCnt+=3;   //stepCnt恢复
 
@@ -132,9 +142,11 @@ int main(int argc, char **argv)
   distance2Wall = 0.58; //距离墙体距离
   Solution.leftLeg2WallFinalPos(0, distance2Wall, givenPosZ, finalPos[0]);
   Solution.leftLeg2Wall(0, initPos[0], finalPos[0], legs, cycle_length);
+#if STICK  
   //一腿预压///
   prePress = 0.015;
   Solution.prePress(0, prePress, prePress_cycle, legs);
+#endif
   Solution.meclErrRecover(meclErrRecover_cycle, legs);
   Solution.stepCnt++;
 
@@ -145,9 +157,11 @@ int main(int argc, char **argv)
   distance2Wall = 0.58; //距离墙体距离
   Solution.leftLeg2WallFinalPos(2, distance2Wall, givenPosZ, finalPos[2]);
   Solution.leftLeg2Wall(2, initPos[2], finalPos[2], legs, cycle_length);
+#if STICK
   //三腿预压///
   prePress = 0.015;
   Solution.prePress(2, prePress, prePress_cycle, legs);
+#endif  
   Solution.meclErrRecover(meclErrRecover_cycle, legs);
   Solution.stepCnt++;
   //std::cin>>y;
@@ -162,23 +176,29 @@ int main(int argc, char **argv)
   liftHeight = 0.1;                                                                  //抬腿高度
 
   Solution.rightLegStride(4, stride, liftHeight, initPos[4], 0, legs, cycle_length);
+#if STICK  
   //五腿预压///
   prePress = 0.015;
   Solution.prePress(4, prePress, prePress_cycle, legs);
+#endif  
   Solution.meclErrRecover(meclErrRecover_cycle, legs);
   Solution.stepCnt++;
 
   Solution.rightLegStride(3, stride, liftHeight, initPos[3], 0, legs, cycle_length); //右腿跨步函数控制
+#if STICK  
   //四腿预压///
   prePress = 0.015;
   Solution.prePress(3, prePress, prePress_cycle, legs);
+#endif  
   Solution.meclErrRecover(meclErrRecover_cycle, legs);
   Solution.stepCnt++;
 
   Solution.rightLegStride(5, stride, liftHeight, initPos[5], 0, legs, cycle_length);
+#if STICK
   //六腿预压///
   prePress = 0.015;
   Solution.prePress(5, prePress, prePress_cycle, legs);
+#endif  
   Solution.meclErrRecover(meclErrRecover_cycle, legs);
   Solution.stepCnt++;
   //std::cin>>y;
@@ -199,23 +219,29 @@ int main(int argc, char **argv)
   liftHeight = 0.06;   //抬腿高度
 
   Solution.leftLegStride(1, stride, liftHeight, roll_t, cycle_length, legs);
+#if STICK  
   //二腿预压///
   prePress = 0.015;
   Solution.prePress(1, prePress, prePress_cycle, legs);
+#endif  
   Solution.meclErrRecover(meclErrRecover_cycle, legs);
   Solution.stepCnt++;
 
   Solution.leftLegStride(0, stride, liftHeight, roll_t, cycle_length, legs);
+#if STICK  
   //一腿预压///
   prePress = 0.015;
   Solution.prePress(0, prePress, prePress_cycle, legs);
+#endif  
   Solution.meclErrRecover(meclErrRecover_cycle, legs);
   Solution.stepCnt++;
 
   Solution.leftLegStride(2, stride, liftHeight, roll_t, cycle_length, legs);
+#if STICK  
   //三腿预压///
   prePress = 0.015;
   Solution.prePress(2, prePress, prePress_cycle, legs);
+#endif  
   Solution.meclErrRecover(meclErrRecover_cycle, legs);
   Solution.stepCnt++;
   //std::cin>>y;
@@ -235,23 +261,29 @@ int main(int argc, char **argv)
   liftHeight = 0.1;    //抬腿高度0.1
 
   Solution.leftLegStride(4, stride, liftHeight, roll_t, cycle_length, legs);
+#if STICK  
   //五腿预压///
   prePress = 0.015;
   Solution.prePress(4, prePress, prePress_cycle, legs);
+#endif  
   Solution.meclErrRecover(meclErrRecover_cycle, legs);
   Solution.stepCnt++;
 
   Solution.leftLegStride(3, stride, liftHeight, roll_t, cycle_length, legs);
+#if STICK  
   //四腿预压///
   prePress = 0.015;
   Solution.prePress(3, prePress, prePress_cycle, legs);
+#endif  
   Solution.meclErrRecover(meclErrRecover_cycle, legs);
   Solution.stepCnt++;
 
   Solution.leftLegStride(5, stride, liftHeight, roll_t, cycle_length, legs);
+#if STICK  
   //六腿预压///
   prePress = 0.015;
   Solution.prePress(5, prePress, prePress_cycle, legs);
+#endif  
   Solution.meclErrRecover(meclErrRecover_cycle, legs);
   Solution.stepCnt++;
   // std::cin>>y;
@@ -272,23 +304,29 @@ int main(int argc, char **argv)
   liftHeight = 0.1;    //抬腿高度0.1
 
   Solution.leftLegStride(1, stride, liftHeight, roll_t, cycle_length, legs);
+#if STICK  
   //二腿预压///
   prePress = 0.015;
   Solution.prePress(1, prePress, prePress_cycle, legs);
+#endif  
   Solution.meclErrRecover(meclErrRecover_cycle, legs);
   Solution.stepCnt++;
 
   Solution.leftLegStride(0, stride, liftHeight, roll_t, cycle_length, legs);
+#if STICK  
   //一腿预压///
   prePress = 0.015;
   Solution.prePress(0, prePress, prePress_cycle, legs);
+#endif  
   Solution.meclErrRecover(meclErrRecover_cycle, legs);
   Solution.stepCnt++;
 
   Solution.leftLegStride(2, stride, liftHeight, roll_t, cycle_length, legs);
+#if STICK  
   //三腿预压///
   prePress = 0.015;
   Solution.prePress(2, prePress, prePress_cycle, legs);
+#endif  
   Solution.meclErrRecover(meclErrRecover_cycle, legs);
   Solution.stepCnt++;
 
@@ -319,26 +357,32 @@ int main(int argc, char **argv)
   initPos[0].y = -initPos[0].y;
 
   Solution.rightLeg2Wall(4, initPos[4], initPos[1], roll_t, legs, cycle_length);
+#if STICK  
   //五腿预压///
   prePress = 0.03;
   //Solution.cyclePosPrePress(4, prePress, prePress_cycle, legs);
   Solution.prePress(4, prePress, prePress_cycle, legs);
+#endif  
   Solution.meclErrRecover(meclErrRecover_cycle, legs);
   Solution.stepCnt++;
 
   Solution.rightLeg2Wall(3, initPos[3], initPos[2], roll_t, legs, cycle_length); //右腿上墙
+#if STICK 
   //四腿预压///
   prePress = 0.015;
   //Solution.cyclePosPrePress(3, prePress, prePress_cycle, legs);
   Solution.prePress(3, prePress, prePress_cycle, legs);
+#endif  
   Solution.meclErrRecover(meclErrRecover_cycle, legs);
   Solution.stepCnt++;
 
   Solution.rightLeg2Wall(5, initPos[5], initPos[0], roll_t, legs, cycle_length);
+#if STICK  
   //六腿预压///
   prePress = 0.015;
   //Solution.cyclePosPrePress(5, prePress, prePress_cycle, legs);
   Solution.prePress(5, prePress, prePress_cycle, legs);
+#endif  
   Solution.meclErrRecover(meclErrRecover_cycle, legs);
   Solution.stepCnt++;
 
